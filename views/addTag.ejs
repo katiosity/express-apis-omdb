@@ -5,3 +5,7 @@
 	</div>
 	<input type="submit">
 </form>
+
+<% tags.forEach(function(tag) { %>
+	<p>#<a href="/tag/<%= tag.id %>"><%= tag.tag %> </a></p>
+<% }); %>

@@ -7,6 +7,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 var ejsLayouts = require('express-ejs-layouts');
 app.use(ejsLayouts);
 
+
 var request = require('request');
 
 var path = require('path');
@@ -64,12 +65,13 @@ app.get('/favorites', function(req, res) {
 
 // see comments
 app.get('/favorites/:id/comments', function(req, res) {
-	db.favorite.findById(req.params.id).then(function(favorites) {
-		favorites.getComments().then(function(comments) {
+	db.favorite.findById(req.params.id)
+		.then(function(favorites) {
+			favorites.getComments().then(function(comments) {
 			// console.log(comments);
-			res.render('comments.ejs', {
-				favorites: favorites,
-				comments: comments
+				res.render('comments.ejs', {
+					favorites: favorites,
+					comments: comments
 			});
 		});
 	});
@@ -80,9 +82,10 @@ app.get('/favorites/:id/comments', function(req, res) {
 app.get('/favorites/:id/tags', function(req, res) {
 	db.favorite.findById(req.params.id).then(function(favorites) {
 		favorites.getTags().then(function(tags) {
-			console.log(tags);
+			// console.log(tags);
 			res.render('addTag.ejs', {
-				favorites: favorites
+				favorites: favorites,
+				tags: tags
 			});
 		});
 	});
@@ -103,27 +106,6 @@ app.post('/favorites/:id/tags', function(req, res) {
 	});
 });
 
-
-
-// app.get('/tags/:id', function(req, res) {
-// 	var tagId = req.params.id;
-// 	// console.log(tagId);
-// 	db.tag.findById(tagId).then(function(tag) {
-// 		tag.getFavorites().then(function(favorites) {
-// 			res.render('tagShowMovies', {
-// 				favorites: favorites,
-// 				tag: tag 
-// 			});
-// 		});
-// 	});
-// 	// .then(function(favorites) {
-// 	// 	console.log(favorites);
-// 	// 	res.render('tagShowMovies.ejs', {
-// 	// 		favorites: favorites
-// 	// 	});
-// 	// });
-// });
-
 app.get('/tags', function(req, res) {
 	db.tag.findAll().then(function(tags) {
 		// console.log(tags);
@@ -134,13 +116,15 @@ app.get('/tags', function(req, res) {
 });
 
 app.get('/tag/:id', function(req, res) {
-	db.tag.findAll({
-		where: {favoriteId: id},
+	console.log("_______")
+	console.log("________")
+	db.tag.findOne({
+		where: {id: req.params.id},
 		include: [db.favorite]
-	}).then(function(favorites) {
+	}).then(function(tag) {
 		res.render('tagShowMovies', {
-			favorites: favorites
-		})
+			tag: tag
+		});
 	});
 });
 
