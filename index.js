@@ -62,8 +62,6 @@ app.get('/favorites', function(req, res) {
 	});
 });
 
-
-// see comments
 app.get('/favorites/:id/comments', function(req, res) {
 	db.favorite.findById(req.params.id)
 		.then(function(favorites) {
@@ -76,8 +74,6 @@ app.get('/favorites/:id/comments', function(req, res) {
 		});
 	});
 });
-
-//post comments, save as above but use app.post
 
 app.get('/favorites/:id/tags', function(req, res) {
 	db.favorite.findById(req.params.id).then(function(favorites) {
@@ -116,8 +112,6 @@ app.get('/tags', function(req, res) {
 });
 
 app.get('/tag/:id', function(req, res) {
-	console.log("_______")
-	console.log("________")
 	db.tag.findOne({
 		where: {id: req.params.id},
 		include: [db.favorite]
@@ -131,21 +125,4 @@ app.get('/tag/:id', function(req, res) {
 var movieSearchFormCtrl = require('./controllers/movieSearchForm');
 app.use('/', movieSearchFormCtrl);
 
-
-
 app.listen(3000);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
